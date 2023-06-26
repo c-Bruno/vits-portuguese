@@ -8,6 +8,7 @@ import subprocess
 import numpy as np
 from scipy.io.wavfile import read
 import torch
+import librosa
 
 MATPLOTLIB_FLAG = False
 
@@ -134,6 +135,10 @@ def load_wav_to_torch(full_path):
   sampling_rate, data = read(full_path)
   return torch.FloatTensor(data.astype(np.float32)), sampling_rate
 
+def load_librosa_to_torch(full_path, sampling_rate):
+  data, _ = librosa.load(full_path, sr=sampling_rate)
+  return torch.FloatTensor(data.astype(np.float32)), sampling_rate
+
 
 def load_filepaths_and_text(filename, split="|"):
   with open(filename, encoding='utf-8') as f:
@@ -143,9 +148,9 @@ def load_filepaths_and_text(filename, split="|"):
 
 def get_hparams(init=True):
   parser = argparse.ArgumentParser()
-  parser.add_argument('-c', '--config', type=str, default="./configs/base.json",
+  parser.add_argument('-c', '--config', type=str, default="./configs/base_0_speakers.json",
                       help='JSON file for configuration')
-  parser.add_argument('-m', '--model', type=str, required=True,
+  parser.add_argument('-m', '--model', type=str, required=False, default="custom_model",
                       help='Model name')
   
   args = parser.parse_args()

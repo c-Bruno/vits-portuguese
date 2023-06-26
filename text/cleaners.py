@@ -15,10 +15,15 @@ hyperparameter. Some cleaners are English-specific. You'll typically want to use
 import re
 from unidecode import unidecode
 from phonemizer import phonemize
+import phonemizer
 
 
 # Regular expression matching whitespace:
 _whitespace_re = re.compile(r'\s+')
+
+# Load phonemizer
+backend_en_us = phonemizer.backend.EspeakBackend(language='en-us', preserve_punctuation=True, with_stress=True)
+backend_pt_br = phonemizer.backend.EspeakBackend(language='pt-br', preserve_punctuation=True, with_stress=True)
 
 # List of (regular expression, replacement) pairs for abbreviations:
 _abbreviations = [(re.compile('\\b%s\\.' % x[0], re.IGNORECASE), x[1]) for x in [
@@ -62,6 +67,7 @@ def collapse_whitespace(text):
 
 
 def convert_to_ascii(text):
+  '''Remove accents and special characters'''
   return unidecode(text)
 
 
@@ -85,7 +91,8 @@ def english_cleaners(text):
   text = convert_to_ascii(text)
   text = lowercase(text)
   text = expand_abbreviations(text)
-  phonemes = phonemize(text, language='en-us', backend='espeak', strip=True)
+  phonemes = backend_en_us.phonemize(text, strip=True)
+  #phonemes = phonemize(text, language='en-us', backend='espeak', strip=True)
   phonemes = collapse_whitespace(phonemes)
   return phonemes
 
@@ -95,6 +102,18 @@ def english_cleaners2(text):
   text = convert_to_ascii(text)
   text = lowercase(text)
   text = expand_abbreviations(text)
-  phonemes = phonemize(text, language='en-us', backend='espeak', strip=True, preserve_punctuation=True, with_stress=True)
+  phonemes = backend_en_us.phonemize(text, strip=True)
+  #phonemes = phonemize(text, language='en-us', backend='espeak', strip=True, preserve_punctuation=True, with_stress=True)
+  phonemes = collapse_whitespace(phonemes)
+  return phonemes
+
+def portuguese_cleaners(text):
+  '''Pipeline for Portuguese text'''
+  # Accents and special characters are important in Portuguese
+  #text = convert_to_ascii(text)
+  text = lowercase(text)
+  #text = expand_abbreviations(text)
+  phonemes = backend_pt_br.phonemize(text, strip=True)
+  #phonemes = phonemize(text, language='pt-br', backend='espeak', strip=True, preserve_punctuation=True, with_stress=True)
   phonemes = collapse_whitespace(phonemes)
   return phonemes

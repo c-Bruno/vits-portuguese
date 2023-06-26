@@ -1,5 +1,27 @@
 # VITS: Conditional Variational Autoencoder with Adversarial Learning for End-to-End Text-to-Speech
 
+# ##### Edited by Programador Artificial - Beginning \#####
+
+This repository has been changed to support portuguese dataset and some code improvements.
+
+All explanations on how to prepare data, train, analyse results and make inferences are explained in the following video (portuguese) - [How To Train VITS]() 
+
+All my logs on Tensorboard and an audio generated with each of the checkpoints are available in the logs_programador_artificial" folder. (the model not available): `tensorboard --logdir logs_programador_artificial`
+
+## Pre-requisites
+0. Install Anaconda environment using [environment.yml](environment.yml): `conda env create -f environment.yml`
+   1. Activate Anaconda environment: `conda activate vits`
+0. Install espeak: `apt-get install espeak`
+0. Build Monotonic Alignment Search
+```sh
+# Cython-version Monotonoic Alignment Search
+cd monotonic_align
+python setup.py build_ext --inplace
+```
+
+
+# ##### Edited by Programador Artificial - End \#####
+
 ### Jaehyeon Kim, Jungil Kong, and Juhee Son
 
 In our recent [paper](https://arxiv.org/abs/2106.06103), we propose VITS: Conditional Variational Autoencoder with Adversarial Learning for End-to-End Text-to-Speech.

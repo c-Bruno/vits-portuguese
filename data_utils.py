@@ -4,10 +4,11 @@ import random
 import numpy as np
 import torch
 import torch.utils.data
+import librosa
 
 import commons 
 from mel_processing import spectrogram_torch
-from utils import load_wav_to_torch, load_filepaths_and_text
+from utils import load_wav_to_torch, load_filepaths_and_text, load_librosa_to_torch
 from text import text_to_sequence, cleaned_text_to_sequence
 
 
@@ -63,15 +64,26 @@ class TextAudioLoader(torch.utils.data.Dataset):
         return (text, spec, wav)
 
     def get_audio(self, filename):
+        '''
+        # Original code
         audio, sampling_rate = load_wav_to_torch(filename)
         if sampling_rate != self.sampling_rate:
             raise ValueError("{} {} SR doesn't match target {} SR".format(
-                sampling_rate, self.sampling_rate))
+                sampling_rate, self.sampling_rate, filename))
         audio_norm = audio / self.max_wav_value
+        '''
+
+        # Custom code (for dataset with multiple sampling_rate)
+        audio_norm, _ = load_librosa_to_torch(filename, self.sampling_rate)
+
         audio_norm = audio_norm.unsqueeze(0)
         spec_filename = filename.replace(".wav", ".spec.pt")
         if os.path.exists(spec_filename):
-            spec = torch.load(spec_filename)
+            try:
+                spec = torch.load(spec_filename)
+            except Exception as e:
+                print(f"This file may be corrupted, try to remove it: {spec_filename}")
+                raise e
         else:
             spec = spectrogram_torch(audio_norm, self.filter_length,
                 self.sampling_rate, self.hop_length, self.win_length,
@@ -201,11 +213,18 @@ class TextAudioSpeakerLoader(torch.utils.data.Dataset):
         return (text, spec, wav, sid)
 
     def get_audio(self, filename):
+        '''
+        # Original code
         audio, sampling_rate = load_wav_to_torch(filename)
         if sampling_rate != self.sampling_rate:
             raise ValueError("{} {} SR doesn't match target {} SR".format(
-                sampling_rate, self.sampling_rate))
+                sampling_rate, self.sampling_rate, filename))
         audio_norm = audio / self.max_wav_value
+        '''
+
+        # Custom code (for dataset with multiple sampling_rate)
+        audio_norm, _ = load_librosa_to_torch(filename, self.sampling_rate)
+
         audio_norm = audio_norm.unsqueeze(0)
         spec_filename = filename.replace(".wav", ".spec.pt")
         if os.path.exists(spec_filename):
