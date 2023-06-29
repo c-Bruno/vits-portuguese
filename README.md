@@ -4,9 +4,9 @@
 
 This repository has been changed to support portuguese dataset and some code improvements.
 
-All explanations on how to prepare data, train, analyse results and make inferences are explained in the following video (portuguese) - [How To Train VITS]() 
+All explanations on how to prepare data, train, analyse results and make inferences are explained in the following video (portuguese) - [How To Train VITS](https://www.youtube.com/watch?v=m8UNUtA0Imk) 
 
-All my logs on Tensorboard and an audio generated with each of the checkpoints are available in the logs_programador_artificial" folder. (the model not available): `tensorboard --logdir logs_programador_artificial`
+All my logs on Tensorboard and an audio generated with each of the checkpoints are available in the logs_programador_artificial" folder. (the model not available): `tensorboard --logdir logs_programador_artificial`. [The graphics can be seen here as well](https://tensorboard.dev/experiment/vL9dfBt1Qhqvr0Dub9nRzg/#scalars)
 
 ## Pre-requisites
 0. Install Anaconda environment using [environment.yml](environment.yml): `conda env create -f environment.yml`
@@ -18,7 +18,6 @@ All my logs on Tensorboard and an audio generated with each of the checkpoints a
 cd monotonic_align
 python setup.py build_ext --inplace
 ```
-
 
 # ##### Edited by Programador Artificial - End \#####
 
