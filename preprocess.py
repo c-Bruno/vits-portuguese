@@ -7,12 +7,12 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument("--out_extension", default="cleaned")
   parser.add_argument("--text_index", default=1, type=int)
-  parser.add_argument("--filelists", nargs="+", default=["data/custom_dataset/train.csv", "data/custom_dataset/valid.csv"])
-  parser.add_argument("--text_cleaners", nargs="+", default=["portuguese_cleaners"])
+  parser.add_argument("--filelists", nargs="+", default=["data/custom_dataset/train.csv", "data/custom_dataset/valid.csv"]) # train and valid files created with prepare_data.py
+  parser.add_argument("--text_cleaners", nargs="+", default=["portuguese_cleaners"]) # portuguese_cleaners added at cleaners.py
 
   args = parser.parse_args()
   vocab = ''
-    
+   
   for filelist in args.filelists:
     print("START:", filelist)
     filepaths_and_text = load_filepaths_and_text(filelist)

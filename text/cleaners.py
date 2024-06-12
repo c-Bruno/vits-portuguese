@@ -22,8 +22,8 @@ import phonemizer
 _whitespace_re = re.compile(r'\s+')
 
 # Load phonemizer
-backend_en_us = phonemizer.backend.EspeakBackend(language='en-us', preserve_punctuation=True, with_stress=True)
-backend_pt_br = phonemizer.backend.EspeakBackend(language='pt-br', preserve_punctuation=True, with_stress=True)
+backend_en_us = phonemizer.backend.EspeakBackend(language='en-us', preserve_punctuation=True, with_stress=True) # Aqui vamos carregar o phonemizer para en-us
+backend_pt_br = phonemizer.backend.EspeakBackend(language='pt-br', preserve_punctuation=True, with_stress=True) # Aqui vamos carregar o phonemizer para pt-br
 
 # List of (regular expression, replacement) pairs for abbreviations:
 _abbreviations = [(re.compile('\\b%s\\.' % x[0], re.IGNORECASE), x[1]) for x in [
@@ -108,12 +108,35 @@ def english_cleaners2(text):
   return phonemes
 
 def portuguese_cleaners(text):
-  '''Pipeline for Portuguese text'''
-  # Accents and special characters are important in Portuguese
+  """
+  Pipeline for Portuguese text.
+
+  This function applies the following steps to the input text:
+  1. Removes accents and special characters.
+  2. Converts the text to lowercase.
+  3. Expands abbreviations.
+  4. Uses the 'espeak' backend of the phonemize function to convert the text into phonemes.
+  5. Collapses consecutive whitespace characters into a single space.
+
+  Note:
+    The 'convert_to_ascii' step and the 'with_stress' argument of the 'phonemize' function are currently commented out.
+    If you want to include these steps, you can uncomment them.
+  """
+  # Remove accents and special characters
   #text = convert_to_ascii(text)
+
+  # Convert the text to lowercase for 
   text = lowercase(text)
+
+  # Expand abbreviations
   #text = expand_abbreviations(text)
+
+  # Convert the text into phonemes using the 'espeak' backend
   phonemes = backend_pt_br.phonemize(text, strip=True)
+
   #phonemes = phonemize(text, language='pt-br', backend='espeak', strip=True, preserve_punctuation=True, with_stress=True)
+
+  # Collapse consecutive whitespace characters into a single space
   phonemes = collapse_whitespace(phonemes)
+
   return phonemes

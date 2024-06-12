@@ -148,7 +148,7 @@ def load_filepaths_and_text(filename, split="|"):
 
 def get_hparams(init=True):
   parser = argparse.ArgumentParser()
-  parser.add_argument('-c', '--config', type=str, default="./configs/base_0_speakers.json",
+  parser.add_argument('-c', '--config', type=str, default="./configs/base_0_speakers.json", # Added base_0_speakers.json created at configs/base_0_speakers.json
                       help='JSON file for configuration')
   parser.add_argument('-m', '--model', type=str, required=False, default="custom_model",
                       help='Model name')
